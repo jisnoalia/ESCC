@@ -1,7 +1,11 @@
 #Figure 4 -----
 #Figure 4 a -----
-
-
+library(fgsea)
+library(msigdbr)
+load("area_hallmark_score.Rdata")
+pheatmap(area_hallmark_score, cellwidth=18, cellheight=15, cluster_rows=T, cluster_cols=T, clustering_method='ward.D2', 
+        kmeans_k=NA, border_color="white", scale="row", drop_levels=T, show_rownames=TRUE, 
+        show_colnames=TRUE,color=rev(getPalette(10)), fontsize_col=13, fontsize_row=11, legend=T)
 
 
 #Figure 4 b -----
