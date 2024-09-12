@@ -185,7 +185,7 @@ VlnPlot(p, features = gene,stacked=T,pt.size=0,cols = mycolor)+theme(axis.text.x
 #Figure 4 f ------
 load('sp_correct.RData')
 p<-subset(sp,TLS=='unknown',invert=T);Idents(p)<-p$TLS;DefaultAssay(p)<-'spatial'
-my_levels<-c('Hyp-TLS','MiD-TLS','SD&CA-TLS','ICA-TLS');Idents(p)<-factor(Idents(p),levels = my_levels)
+my_levels<-c('Hyp-TLS','MiD-TLS','SD&CA-TLS');Idents(p)<-factor(Idents(p),levels = my_levels)
 mycolor<-c("#D95F02","#666666","#66A61E","#E6AB02")
 gene<-c('CD19','MS4A1','CD79A')
 VlnPlot(p, features = gene,stacked=T,pt.size=0,cols = mycolor)+theme(axis.text.x = element_text(size = 12,angle = 0,hjust = 0.5,color = 'black'),axis.text.y = element_text(color = 'black'))+xlab('')
@@ -207,7 +207,7 @@ library(reshape)
 dec<-read.table("/spatialDWLS/results/TLS_nomean.txt", sep='\t',header = T)
 sub<-dec[dec$Cluster%in%c('B','DC','Plasma','T','Endothelium','Fibroblast'),]
 mycolor<-c("#D95F02","#666666","#66A61E","#E6AB02")
-sub$Area<-factor(sub$Area,levels = c('Hyp-TLS','MiD-TLS','SD&CA-TLS','ICA-TLS'))
+sub$Area<-factor(sub$Area,levels = c('Hyp-TLS','MiD-TLS','SD&CA-TLS'))
 ggboxplot(sub,x="Cluster",y="Ratio",color = "Area",palette = mycolor,add = "jitter",add.params = list(size=0.1))
 sub<-dec[dec$Cluster%in%c('Cancer','Epithelium','Mast','MoMac','Neutrophil','NK'),] # figs8
 mycolor<-c("#D95F02","#666666","#66A61E","#E6AB02")
@@ -257,20 +257,6 @@ p<-AddModuleScore(p,features = list(gene4),name = "Tfh");p<-AddModuleScore(p,fea
 p<-AddModuleScore(p,features = list(gene6),name = "Endo");p<-AddModuleScore(p,features = list(gene7),name = "CAF")
 colnames(p@meta.data)[85:91]<-c('B_score','Plasma_score','Follicular_DC_score','Tfh_score','T_score','Endothelium_score','CAF_score')
 SpatialFeaturePlot(p,features = c('B_score','Plasma_score','Follicular_DC_score','Tfh_score','T_score','Endothelium_score','CAF_score'),alpha = c(1,0.6),ncol=4,images = df[df$file=='KT2',]$image,pt.size.factor = 2)&scale_fill_gradientn(colors = rev(brewer.pal(n = 11, name = "RdYlBu")),limits = c(-1, 1.5))
-# ICA-TLS
-p<-subset(sp,file=='KT1_2')
-p$use <- ifelse(p$TLS %in% "ICA-TLS",1,0)
-col = c("white", "#E6AB02")
-SpatialFeaturePlot(p,features = c('use'),alpha = c(0,1),ncol=1,images = df[df$file=='KT1_2',]$image )+
-  scale_fill_gradientn(colours = col)+NoLegend()
-DefaultAssay(p)<-'spatial'
-p<-subset(p,TLS=='ICA-TLS')
-p<-AddModuleScore(p,features = list(gene1),name = "B");p<-AddModuleScore(p,features = list(gene2),name = "Plasma");p<-AddModuleScore(p,features = list(gene3),name = "fDC")
-p<-AddModuleScore(p,features = list(gene4),name = "Tfh");p<-AddModuleScore(p,features = list(gene5),name = "T")
-p<-AddModuleScore(p,features = list(gene6),name = "Endo");p<-AddModuleScore(p,features = list(gene7),name = "CAF")
-colnames(p@meta.data)[85:91]<-c('B_score','Plasma_score','Follicular_DC_score','Tfh_score','T_score','Endothelium_score','CAF_score')
-SpatialFeaturePlot(p,features = c('B_score','Plasma_score','Follicular_DC_score','Tfh_score','T_score','Endothelium_score','CAF_score'),alpha = c(1,0.6),ncol=4,images = df[df$file=='KT1_2',]$image,pt.size.factor = 2.5)&scale_fill_gradientn(colors = rev(brewer.pal(n = 11, name = "RdYlBu")),limits = c(-1, 1.5))
-
 
 #Extended Data Fig. 9 ------
 
